@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            box-sizing: border-box;
+        }
+        .header {
+            width: 100%;
+            max-width: 1700px;
+            height: 700px;
+            margin: 30px auto 0 auto;
+            background-image: url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative; /* 确保父元素相对定位 */
+        }
+        .navbar {
+            width: 100%;
+            max-width: 1700px;
+            height: 60px;
+            background-color: #61b4eb;
+            font-size: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 auto;
+        }
+        .navbar img {
+            height: 50px;
+            margin-left: 10px;
+        }
+        .navbar .title {
+            color: white;
+            margin-left: 10px;
+        }
+        .navbar .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin-right: 10px;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+        .content {
+            width: 100%;
+            max-width: 1700px;
+            margin: 30px auto;
+            text-align: center;
+        }
+        .content button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 10px; /* 添加圆角 */
+        }
+        .file-content {
+            width: 100%;
+            max-width: 1600px;
+            height: 250px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            text-align: left;
+            white-space: pre-wrap;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+            border-radius: 10px; /* 添加圆角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+        }
+        .file-item {
+            display: inline-flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            white-space: nowrap;
+            border-radius: 10px; /* 添加圆角 */
+        }
+        .file-item .remove-btn {
+            cursor: pointer;
+            color: red;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 1600px;
+            margin: 30px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 10px; /* 添加圆角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+        }
+        .chat-box {
+            width: 1580px;
+            height: 3000px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #fff;
+            border-radius: 10px; /* 添加圆角 */
+        }
+        .chat-input-container {
+            position: relative;
+            width: 100%;
+        }
+        .chat-input {
+            width: calc(100% - 150px); /* 调整输入框的宽度，给按钮留出位置 */
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 18px;
+            border-radius: 10px; /* 添加圆角 */
+            padding-left: 40px; /* 为左侧图标留出空间 */
+            padding-right: 100px; /* 为右侧按钮留出空间 */
+        }
+        .chat-input-left-icon {
+            position: absolute;
+            bottom: 10px; /* 下对齐 */
+            left: 10px;
+            width: 24px;
+            height: 24px;
+        }
+        .chat-input-right-buttons {
+            position: absolute;
+            top: 57%;
+            right: 10px;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input-button {
+            width: 40px; /* 设置按钮宽度 */
+            height: 40px; /* 设置按钮高度 */
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease; /* 添加过渡效果 */
+        }
+        .chat-input-button img {
+            max-width: 100%; /* 确保图片不会超过按钮宽度 */
+            max-height: 100%; /* 确保图片不会超过按钮高度 */
+        }
+        .chat-input-button:hover {
+            transform: scale(1.1); /* 鼠标悬停时放大 */
+        }
+        .chat-input-button:active {
+            transform: scale(0.9); /* 点击时缩小 */
+        }
+        .chat-message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .user-message {
+            justify-content: flex-end;
+        }
+        .model-message {
+            justify-content: flex-start;
+        }
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 10px;
+        }
+        .chat-text {
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f1f1f1;
+        }
+        .user-message .chat-text {
+            background-color: #61b4eb;
+            color: white;
+        }
+        .import-button {
+            position: absolute;
+            top: 26%; /* 按照父元素的百分比位置 */
+            left: 52%; /* 按照父元素的百分比位置 */
+            transform: translate(-50%, -50%);
+            width: 81px;
+            height: 81px;
+            border-radius: 50%;
+            background-color: transparent; /* 设置背景透明 */
+            color: white;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            z-index: 10;        
+            transition: transform 0.5s ease; /* 添加过渡效果 */
+        }
+        .import-button:hover {
+            transform: translate(-50%, -50%) scale(1.3); /* 鼠标悬停时放大 */
+        }
+        .import-button:active {
+            transform: translate(-50%, -50%) scale(0.8); /* 点击时缩小 */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div style="display: flex; align-items: center;">
+            <img src="2.png" alt="Logo">
+            <div class="title">人工智能</div>
+        </div>
+        <div class="avatar" style="text-align: center;">
+            <img src="3.jpg" alt="Avatar" style="display: block; margin: auto; border-radius: 50%;">
+        </div>
+    </div>
+    <div class="header">
+        <button class="import-button" onclick="document.getElementById('fileInput').click()">导入</button>
+    </div>
+    <div class="content">
+        <div class="file-content" id="fileContent">导入的文件名称将显示在这里</div>
+        <input type="file" id="fileInput" style="display: none;" multiple onchange="displayFileNames()">
+        <div class="file-name" id="fileName"></div>
+    </div>
+    <div class="chat-container">
+        <div id="chatBox">
+            <iframe
+                src="http://1.94.65.23:8080/ui/chat/b0c99a3fea5fbd58"
+                style="width: 1600px; height: 500px;"
+                frameborder="0"
+                allow="microphone">
+            </iframe>
+        </div>
+    </div>
+    <script>
+        function displayFileNames() {
+            var input = document.getElementById('fileInput');
+            var fileContent = document.getElementById('fileContent');
+            if (fileContent.innerText === '导入的文件名称将显示在这里') {
+                fileContent.innerText = '';
+            }
+            for (var i = 0; i < input.files.length; i++) {
+                var fileName = input.files[i].name;
+                var div = document.createElement('div');
+                div.className = 'file-item';
+                div.innerHTML = fileName + ' <span class="remove-btn" onclick="removeFile(this)">×</span>';
+                fileContent.appendChild(div);
+            }
+        }
+
+        function removeFile(element) {
+            var fileItem = element.parentElement;
+            fileItem.parentElement.removeChild(fileItem);
+        }
+    </script>
+</body>
+</html>

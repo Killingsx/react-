@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优化后的页面示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            box-sizing: border-box;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #61b4eb;
+            color: #fff;
+        }
+        .navbar .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .navbar img {
+            height: 50px;
+        }
+        .avatar img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .header {
+            position: relative;
+            background: url('1.jpg') no-repeat center/cover;
+            height: 700px;
+        }
+        .import-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            background-color: #61b4eb;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .import-button:hover {
+            transform: scale(1.1);
+        }
+        .content {
+            max-width: 1600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .file-content {
+            max-width: 1600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        .file-item .remove-btn {
+            color: red;
+            cursor: pointer;
+        }
+        .chat-container {
+            max-width: 1600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .chat-box {
+            height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        .chat-input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .chat-input {
+            flex-grow: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin-right: 10px;
+        }
+        .chat-input-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input-button {
+            padding: 10px 15px;
+            font-size: 14px;
+            color: white;
+            background-color: #61b4eb;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .chat-input-button:hover {
+            background-color: #5199c1;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="title">人工智能</div>
+        <div class="avatar">
+            <img src="3.jpg" alt="用户头像">
+        </div>
+    </div>
+    <div class="header">
+        <button class="import-button" onclick="document.getElementById('fileInput').click()">导入文件</button>
+    </div>
+    <div class="content">
+        <div class="file-content" id="fileContent">导入的文件名称将显示在这里。</div>
+        <input type="file" id="fileInput" style="display: none;" multiple onchange="displayFileNames()">
+    </div>
+    <div class="chat-container">
+        <div class="chat-box" id="chatBox"></div>
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="chatInput" placeholder="输入消息..." onkeydown="if(event.key === 'Enter') sendMessage()">
+            <div class="chat-input-buttons">
+                <button class="chat-input-button" onclick="viewHistory()">历史</button>
+                <button class="chat-input-button" onclick="openSettings()">设置</button>
+                <button class="chat-input-button" onclick="endConversation()">结束</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function displayFileNames() {
+            const fileInput = document.getElementById('fileInput');
+            const fileContent = document.getElementById('fileContent');
+            fileContent.innerHTML = '';
+
+            Array.from(fileInput.files).forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `${file.name} <span class='remove-btn' onclick='removeFile(this)'>×</span>`;
+                fileContent.appendChild(fileItem);
+            });
+        }
+
+        function removeFile(element) {
+            element.parentElement.remove();
+        }
+
+        function sendMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const chatBox = document.getElementById('chatBox');
+            const message = chatInput.value.trim();
+
+            if (message) {
+                const userMessage = document.createElement('div');
+                userMessage.textContent = `用户: ${message}`;
+                chatBox.appendChild(userMessage);
+                chatInput.value = '';
+
+                setTimeout(() => {
+                    const modelMessage = document.createElement('div');
+                    modelMessage.textContent = `模型: 这是模型的回复`;
+                    chatBox.appendChild(modelMessage);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        function viewHistory() {
+            alert('查看历史记录功能尚未实现。');
+        }
+
+        function openSettings() {
+            alert('设置面板功能尚未实现。');
+        }
+
+        function endConversation() {
+            alert('结束对话功能尚未实现。');
+        }
+    </script>
+</body>
+</html>
