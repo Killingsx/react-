@@ -152,7 +152,7 @@ export default function Home() {
           </p>
           <div className="flex space-x-4">
             <Button variant="secondary" size="lg" onClick={scrollToChat}>开始使用</Button>
-            <Button variant="outline" size="lg" onClick={() => window.open('https://github.com/Killingsx', '_blank')}>
+            <Button variant="outline" size="lg" onClick={() => window.open('https://github.com/Killingsx/react-', '_blank')}>
               GitHub
             </Button>
             <Button variant="outline" size="lg">
